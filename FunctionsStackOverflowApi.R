@@ -13,7 +13,7 @@ library(stringr)
 so_base_url <- "https://api.stackexchange.com/2.2/search/advanced"
 
 # Search for items matching the query string from StackOverflow
-get_data <- function(filter = "withbody", page = NULL) {
+so_get_data <- function(filter = "withbody", page = NULL) {
   api_url <- so_base_url
 
   api_url <- paste(api_url, "?key=", so_api_key, sep = "", collapse = "")
@@ -31,7 +31,6 @@ get_data <- function(filter = "withbody", page = NULL) {
   content(response)
 }
 
-
 get_stackoverflow_data <- function(query_string) {
   if (!exists("so_api_key")) {
     stop("Please set the StackOverflow API key in the script")
@@ -40,10 +39,10 @@ get_stackoverflow_data <- function(query_string) {
   dataset <- data.frame()
   page_number <- 1
 
-  total_count <- get_data(filter = "total")
+  total_count <- so_get_data(filter = "total")
 
   repeat {
-    request_data <- get_data(page = page_number)
+    request_data <- so_get_data(page = page_number)
     if (length(request_data$items) == 0) {
       break
     }
