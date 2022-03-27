@@ -18,8 +18,9 @@ source("FunctionsScopusApi.R")
 
 #For example
 #Finds 321 papers (29 April 2018). Suitable for classroom demo
-query_string = "Continuous Integration"
-my_filename = "ci"
+
+query_string = "Serverless"
+my_filename = "serverless"
 
 
 
@@ -29,11 +30,18 @@ my_filename = "ci"
 
   my_query_string = "TITLE-ABS-KEY(\""
   my_query_string = paste(my_query_string, query_string, sep="")
+
   #EDIT this line
-  my_query_string = paste(my_query_string, "\") AND ALL('software testing')", sep="")
+  my_query_string = paste(my_query_string, "\") AND ALL('cloud')", sep="")
   
   #Get articles and save those - we do not want to re-run the query
-  my_articles = get_scopus_papers(my_query_string)
+  my_articles = get_scopus_papers(
+    my_query_string,
+    api_url = "https://api-elsevier-com.pc124152.oulu.fi:9443",
+    cookie = "AMCV_4D6368F454EC41940A4C98A6%40AdobeOrg=-2121179033%7CMCIDTS%7C19078%7CMCMID%7C83859345159013876219201416419800663667%7CMCAID%7CNONE%7CMCOPTOUT-1648388804s%7CNONE%7CvVersion%7C5.3.0; mbox=PC#fb9146c38d8d4233a157fcf1aa08fef4.37_0#1711626405|session#a2252961b463473082ba0a46eceeffc5#1648383465; ezproxy=UayxQSjjV7LY884; at_check=true; AMCVS_4D6368F454EC41940A4C98A6%40AdobeOrg=1"
+  )
+  
+
   #Another example. This is ISSN number of IEEE Transactions on Software Engineering (=TSE)
   #This example  returns over 3,000 articles. Will take some time. Speed varies. typical 250 articles per minute
   #my_articles = get_scopus_papers("ISSN(0098-5589)")

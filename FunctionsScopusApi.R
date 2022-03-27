@@ -37,6 +37,12 @@ get_document_count = function (search_string,  year=0){#if year set will search 
   paper_c
 }
 
+inst_cookie_header = function(cookie) {
+  x = c("Cookie" = cookie)
+  class(x) = "cookie"
+  x
+}
+
 
 #For example (case 1, 1a, 1b or 2)
 #query_string = "TITLE-ABS-KEY(\"Continuous Integration\")"
@@ -45,7 +51,11 @@ get_document_count = function (search_string,  year=0){#if year set will search 
 #query_string = "TITLE-ABS-KEY(\"Continuous Integration\") AND ALL('software testing')"
 #TITLE-ABS-KEY(\"What types of defects are really discovered in code reviews\")
 
-get_scopus_papers = function (query_string){
+get_scopus_papers = function (
+  query_string,
+  api_url = "https://api.elsevier.com",
+  cookie = NULL
+){
 
   cursor_value = "*"
   first_round = TRUE
@@ -56,12 +66,26 @@ get_scopus_papers = function (query_string){
   return_data_frame = data.frame()
   error_rows <- NULL
   
+  head = NULL
+  
+  if(!is.null(cookie)) {
+    head = inst_cookie_header(cookie)
+  }
+  
   while(found_items_num > 0){
     #http://api.elsevier.com/documentation/search/SCOPUSSearchViews.htm
     #https://api.elsevier.com/documentation/SCOPUSSearchAPI.wadl
     #https://dev.elsevier.com/guides/ScopusSearchViews.htm
     #Scopus response https://dev.elsevier.com/payloads/search/scopusSearchResp.json
-    resp = generic_elsevier_api(query=query_string, type="search", search_type="scopus", cursor=cursor_value, view="COMPLETE")
+    resp = generic_elsevier_api(
+      root_http = api_url,
+      query=query_string,
+      type="search",
+      search_type="scopus",
+      cursor=cursor_value,
+      view="COMPLETE",
+      headers = head
+    )
     
     if (resp$get_statement$status_code != 200) {
       stop(paste(resp))

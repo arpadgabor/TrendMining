@@ -7,16 +7,16 @@ source("FunctionsTwitterApi.R")
 #my_filename = string to be used as a part of the filename
 
 #For example
-query_string = "#jenkins"
-my_filename = "jenkins"
+query_string <- "#serverless"
+my_filename <- "serverless"
 
 #get_TwitterData = function (query_string, my_filename) {
 
-  #This may take quite a long time, depending on the data 
-  #You may test duration like this. Then compute how long it would take to get max tweets
-  #system.time(my_articles <- get_twitter_data(query_string, maxtweets=100))
-  #system.time(my_articles <- get_twitter_data(query_string, maxtweets=200))
-  my_articles <- get_twitter_data(query_string, maxtweets=6000)
+  # This may take quite a long time, depending on the data 
+  # You may test duration like this. Then compute how long it would take to get max tweets
+  # system.time(my_articles <- get_twitter_data(query_string, maxtweets=100))
+  # system.time(my_articles <- get_twitter_data(query_string, maxtweets=200))
+  my_articles <- get_twitter_data("#serverless", maxtweets=100)
 
   #save(my_articles, file="data/my_Twitter_articles_dirty.RData")
   if (is.factor(my_articles$Abstract))
@@ -34,7 +34,7 @@ my_filename = "jenkins"
   abstract = gsub("[\'\"/.,-:;!=%~*]", " ", abstract)
   abstract = gsub("[.]", " ", abstract)
   abstract = gsub("[ \t]{2,}", " ", abstract)
-  abstract <- chartr("åäáàâãöóòôõúùûüéèíìïëêñý", "aaaaaaooooouuuueeiiieeny", abstract)
+  abstract <- chartr("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", "aaaaaaooooouuuueeiiieeny", abstract)
  
   #Text
   title = gsub("#", " ", title)
@@ -45,7 +45,7 @@ my_filename = "jenkins"
   title = gsub("[\'\"/.,-:;!=%~*]", " ", title)
   title = gsub("[.]", " ", title)
   title = gsub("[ \t]{2,}", " ", title)
-  title <- chartr("åäáàâãöóòôõúùûüéèíìïëêñý", "aaaaaaooooouuuueeiiieeny", title)
+  title <- chartr("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", "aaaaaaooooouuuueeiiieeny", title)
   
   if (is.factor(my_articles$AuthorName))
     my_articles$AuthorName = levels(my_articles$AuthorName)[my_articles$AuthorName]

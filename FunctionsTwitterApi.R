@@ -3,7 +3,7 @@
 library(devtools)
 library(rJava)
 
-get_twitter_data <- function (query_string, maxtweets=100){
+get_twitter_data <- function (query_string = "#serverles", maxtweets=100){
   
   #Start the JVM
   .jinit('.')
