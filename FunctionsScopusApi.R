@@ -1,5 +1,11 @@
 library(rscopus)
 
+inst_cookie_header = function(cookie) {
+  x = c("Cookie" = cookie)
+  class(x) = "Cookie"
+  x
+}
+
 get_scopus_papers_per_year = function (search_string, domain="software testing", years=(2000:2017)){
   
   papers_per_year = 0 
@@ -65,6 +71,7 @@ get_scopus_papers = function (
   max_items = 100000
   return_data_frame = data.frame()
   error_rows <- NULL
+  cookie = "AMCV_4D6368F454EC41940A4C98A6%40AdobeOrg=-2121179033%7CMCIDTS%7C19078%7CMCMID%7C83859345159013876219201416419800663667%7CMCAID%7CNONE%7CMCOPTOUT-1648388804s%7CNONE%7CvVersion%7C5.3.0; mbox=PC#fb9146c38d8d4233a157fcf1aa08fef4.37_0#1711626405|session#a2252961b463473082ba0a46eceeffc5#1648383465; ezproxy=UayxQSjjV7LY884; at_check=true; AMCVS_4D6368F454EC41940A4C98A6%40AdobeOrg=1"
   
   head = NULL
   

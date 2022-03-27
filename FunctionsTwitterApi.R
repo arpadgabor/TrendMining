@@ -27,9 +27,9 @@ get_twitter_data <- function (query_string = "#serverles", maxtweets=100){
   
   #For testing purposes, only
   command = paste(command, " maxtweets=", maxtweets, sep = "", collapse = '')
-
+  print("ciao")
   system(command)
-           
+  print("bau")           
   #Get the data    
   csv_file = paste(getoldtweets_path, "/output_got.csv", sep = '', collapse = '')
   my_data = read.csv(csv_file, sep=";", header=TRUE, quote="")

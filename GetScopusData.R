@@ -18,7 +18,6 @@ source("FunctionsScopusApi.R")
 
 #For example
 #Finds 321 papers (29 April 2018). Suitable for classroom demo
-
 query_string = "Serverless"
 my_filename = "serverless"
 
@@ -51,8 +50,8 @@ my_filename = "serverless"
 
   #Remove copyright sign.
   abstract = my_articles$Abstract
-  abstract = gsub("Copyright ©+[^.]*[.]","",abstract)
-  abstract = gsub("©+[^.]*[.]","",abstract) # Depdenging on the enviroment or data you might need something different* 
+  abstract = gsub("Copyright ï¿½+[^.]*[.]","",abstract)
+  abstract = gsub("ï¿½+[^.]*[.]","",abstract) # Depdenging on the enviroment or data you might need something different* 
   abstract = gsub("All rights reserved[.]","",abstract)
   abstract = gsub("All right reserved[.]","",abstract)
   abstract = gsub("No abstract available[.]","",abstract)
