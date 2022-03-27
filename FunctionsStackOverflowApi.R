@@ -13,21 +13,22 @@ library(stringr)
 so_base_url <- "https://api.stackexchange.com/2.2/search/advanced"
 
 # Search for items matching the query string from StackOverflow
-create_so_req_url <- function(filter_text, page = NULL) {
+get_data <- function(filter_text, page = NULL) {
   api_url <- so_base_url
 
   api_url <- paste(api_url, "?key=", so_api_key, sep = "", collapse = "")
+  api_url <- paste(api_url, "&site=stackoverflow", sep = "", collapse = "")
   api_url <- paste(api_url, "&order=", "desc", sep = "", collapse = "")
   api_url <- paste(api_url, "&sort=", "activity", sep = "", collapse = "")
-  api_url <- paste(api_url, "&q=", query_string, sep = "", collapse = "")
   api_url <- paste(api_url, "&filter=", filter_text, sep = "", collapse = "")
-  api_url <- paste(api_url, "&site=stackoverflow", sep = "", collapse = "")
+  api_url <- paste(api_url, "&q=", query_string, sep = "", collapse = "")
 
   if (!(is.null(page))) {
     api_url <- paste(api_url, "&page=", page,  sep = "", collapse = "")
   }
 
-  api_url
+  response <- GET(URLencode(api_url))
+  content(response)
 }
 
 
@@ -36,33 +37,24 @@ get_stackoverflow_data <- function(query_string) {
     stop("Please set the StackOverflow API key in the script")
   }
 
-  # get total
-  api_url_total <- create_so_req_url("total")
-  print(api_url_total)
-  sample_total <- GET(URLencode(api_url_total))
-  content_total <- content(sample_total)
-
-  # get data
-  filter_text <- "withbody"
-  api_url <- create_so_req_url(filter_text, 338)
-  # Prepare the url and fetch the data
-  api_url <- URLencode(api_url)
-
-  sample2 <- GET(api_url)
-  request_data <- content(sample2)
-
   dataset <- data.frame()
-
   page_number <- 1
 
-  # while (length(my_data$items) > 0) {
+  total_count <- get_data("total")
+
   repeat {
-    total <- nrow(dataset) + length(request_data$items)
+    request_data <- get_data("withbody", page_number)
+    if (length(request_data$items) == 0) {
+      break
+    }
+
+    dataset_size <- nrow(dataset) + length(request_data$items)
+
     print(
       paste(
         "Page:", str_pad(as.character(page_number), 3, side = "left"),
-        "| Items:", total,
-        "/", content_total$total,
+        "| Items:", dataset_size,
+        "/", total_count$total,
         "| Results: ", length(request_data$items),
         sep = " ",
         collapse = ""
@@ -108,17 +100,7 @@ get_stackoverflow_data <- function(query_string) {
     if (page_number %% 10 == 0) {
       Sys.sleep(1)
     }
-
     page_number <- page_number + 1
-
-    api_url <- create_so_req_url(filter_text, page_number)
-    api_url <- URLencode(api_url)
-    sample2 <- GET(api_url)
-    request_data <- content(sample2)
-
-    if (length(request_data$items) == 0) {
-      break
-    }
   }
 
   dataset
