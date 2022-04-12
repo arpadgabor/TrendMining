@@ -1,11 +1,10 @@
-Setup the environment & API Keys.
+# Setup the environment & API Keys.
 
 ```{r}
 rm(list = ls())
 
 library("rscopus")
 source("FunctionsScopusApi.R")
-source("FunctionsTwitterApi.R")
 ```
 
 ```{r}
@@ -16,7 +15,7 @@ set_api_key(scopus_api_key)
 ```
 
 ```{r}
-my_work_dir <- getwd()
+my_work_dir <- "C:/Users/arpad/Documents/Workspace/School/NextGen SE/TrendMining"
 my_data_dir <- "data"
 
 if (!file.exists(my_data_dir)) {
@@ -24,16 +23,23 @@ if (!file.exists(my_data_dir)) {
 }
 ```
 
-Search strings
+## Stackoverflow
 
-```{r}
-query_string <- "serverless"
-my_filename <- "serverless"
-```
-
-Stackoverflow
+First we check how many results we get for the query string.
 
 ```{r}
 source("FunctionsStackOverflowApi.R")
+
+query_string <- "serverless"
+my_filename <- "serverless"
+
+so_total <- so_get_data(filter = "total")
+print(paste("Total search results: ", so_total$total))
+```
+
+If like the number of results we can continue and fetch all of them.
+The script will wait for 1 second after every 10 pages of results to avoid being rate limited by the Stack Overflow API.
+
+```{r}
 so_search_results <- get_stackoverflow_data(query_string)
 ```
