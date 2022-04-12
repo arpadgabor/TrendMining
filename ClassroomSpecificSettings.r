@@ -58,7 +58,7 @@ if (libPath %in% .libPaths() == FALSE)
   .libPaths(c(libPath,.libPaths()))
 }
 
-sc_api_key = "9d8cf209ec6c67867bc44a5247ad0e52"
+sc_api_key = "cc54f694c3e5f0ba23e3063a8d037ee3"
 
 so_api_key = "9raZ36FkYGFHDSNrW)gdsw(("
 

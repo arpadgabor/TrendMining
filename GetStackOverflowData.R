@@ -14,7 +14,7 @@ source("FunctionsStackOverflowApi.R")
 # my_filename = string to be used as a part of the filename
 
 # For example
-query_string <- "cloud functions" # 2208 items works for demo
+query_string <- "Serverless" # 2208 items works for demo
 my_filename <- "serverless"
 
 # get_stackOverFlowData = function(query_string, my_filename) {

@@ -7,7 +7,7 @@ source("FunctionsTwitterApi.R")
 #my_filename = string to be used as a part of the filename
 
 #For example
-query_string <- "#serverless"
+query_string <- "serverless"
 my_filename <- "serverless"
 
 #get_TwitterData = function (query_string, my_filename) {

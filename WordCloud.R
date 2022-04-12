@@ -10,7 +10,7 @@ library(magrittr)
 library(wordcloud)
 
 #EDIT this row
-my_file <- "my_Scopus_TSE_articles_clean_data.RData"
+my_file <- "my_STO_serverless_data.RData"
 
 #draw_myWordCloud = function(my_file){
   
@@ -24,12 +24,12 @@ my_file <- "my_Scopus_TSE_articles_clean_data.RData"
   my_text = tolower(my_text)
   
   #remove more words that we do not care about 
-  my_stopwords = c(stopwords::stopwords(language = "en", source = "snowball"),"myStopword1", "myStopword2")
+  my_stopwords = c(stopwords::stopwords(language = "en", source = "snowball"),"serverless", "using", "data", "time", "need", "just", "work", "template", "create", "like", "get", "also", "run", "know", "trying", "sam", "now", "help", "set", "issue", "find", "tried", "one", "via", "yml", "see", "new", "can", "tried", "find", "project", "make", "however", "possible", "way", "want", "use", "thanks", "getting", "something", "without", "example", "created", "able", "fine", "functions")
   
   
   my_text = removeWords(my_text, my_stopwords)
   
-  wordcloud(my_text, max.words=50, min.freq=5, random.order=FALSE, rot.per=0)
+  wordcloud(my_text, max.words=50, min.freq=5, random.order=FALSE, rot.per=0, scale=c(4,.2))
   
   rm(my_text)
   print("Finished Word cloud")

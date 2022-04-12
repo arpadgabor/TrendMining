@@ -5,9 +5,9 @@ library(magrittr)
 library(tm)
 library(wordcloud)
 
-my_stopwords = c(stopwords::stopwords(language = "en", source = "snowball"),"myStopword1", "myStopword2")
+my_stopwords = c(stopwords::stopwords(language = "en", source = "snowball"),"serverless", "using", "data", "time", "need", "just", "work", "template", "create", "like", "get", "also", "run", "know", "trying", "sam", "now", "help", "set", "issue", "find", "tried", "one", "via", "yml", "see", "new", "can", "tried", "find", "project", "make", "however", "possible", "way", "want", "use", "thanks", "getting", "something", "without", "example", "created", "able", "fine", "functions", "cant", "role", "custom","exist","app", "unable","shared", "file", "cors", "best")
 #EDIT this row
-my_file <- "my_Scopus_TSE_articles_clean_data.RData"
+my_file <- "my_STO_serverless_data.RData"
 #draw_ComparisonCloud = function(my_file){
 
   my_temp_file = paste(my_data_dir, "/", sep="")
@@ -38,7 +38,7 @@ my_file <- "my_Scopus_TSE_articles_clean_data.RData"
                          
   comparison.cloud(tdm, max.words=50, rot.per=0, 
                    colors=brewer.pal(3,"Set1"),
-                   title.size=1.5)
+                   title.size=1.5, scale=c(3, 0.6))
 
   rm(my_articles_2)
   print("Finished comparison cloud")
@@ -82,9 +82,9 @@ my_file <- "my_Scopus_TSE_articles_clean_data.RData"
 
   colnames(tdm) <- c ("Q1 <= 0.25", "0.25 < Q2 <= 0.5", 
                       "0.5 < Q3 <= 0.75", "Q4 > 0.75")
-  comparison.cloud(tdm, max.words=50, rot.per=0, title.size=1.5, colors=brewer.pal(4,"Set1"))
+  comparison.cloud(tdm, max.words=50, rot.per=0, title.size=1.5, colors=brewer.pal(4,"Set1"), scale=c(6, 0.1))
   
-  rm(my_articles)
+    rm(my_articles)
   
   print("FInished 4-Way Comparison cloud")
   

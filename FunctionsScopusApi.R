@@ -1,11 +1,5 @@
 library(rscopus)
 
-inst_cookie_header = function(cookie) {
-  x = c("Cookie" = cookie)
-  class(x) = "Cookie"
-  x
-}
-
 get_scopus_papers_per_year = function (search_string, domain="software testing", years=(2000:2017)){
   
   papers_per_year = 0 
@@ -49,20 +43,17 @@ inst_cookie_header = function(cookie) {
   x
 }
 
-
 #For example (case 1, 1a, 1b or 2)
 #query_string = "TITLE-ABS-KEY(\"Continuous Integration\")"
-  #query_string = paste(query_string, "AND ALL('software testing') AND YEAR (",year, ")")
-  #query_string = paste(query_string, "AND ALL('software testing')")
+#query_string = paste(query_string, "AND ALL('software testing') AND YEAR (",year, ")")
+#query_string = paste(query_string, "AND ALL('software testing')")
 #query_string = "TITLE-ABS-KEY(\"Continuous Integration\") AND ALL('software testing')"
 #TITLE-ABS-KEY(\"What types of defects are really discovered in code reviews\")
 
-get_scopus_papers = function (
-  query_string,
-  api_url = "https://api.elsevier.com",
-  cookie = NULL
-){
-
+get_scopus_papers = function (query_string, 
+                              api_url = "https://api.elsevier.com", 
+                              cookie=NULL){
+  
   cursor_value = "*"
   first_round = TRUE
   found_items_num = 1
@@ -71,11 +62,10 @@ get_scopus_papers = function (
   max_items = 100000
   return_data_frame = data.frame()
   error_rows <- NULL
-  cookie = "AMCV_4D6368F454EC41940A4C98A6%40AdobeOrg=-2121179033%7CMCIDTS%7C19078%7CMCMID%7C83859345159013876219201416419800663667%7CMCAID%7CNONE%7CMCOPTOUT-1648388804s%7CNONE%7CvVersion%7C5.3.0; mbox=PC#fb9146c38d8d4233a157fcf1aa08fef4.37_0#1711626405|session#a2252961b463473082ba0a46eceeffc5#1648383465; ezproxy=UayxQSjjV7LY884; at_check=true; AMCVS_4D6368F454EC41940A4C98A6%40AdobeOrg=1"
   
   head = NULL
   
-  if(!is.null(cookie)) {
+  if(!is.null(cookie)){
     head = inst_cookie_header(cookie)
   }
   
@@ -84,15 +74,7 @@ get_scopus_papers = function (
     #https://api.elsevier.com/documentation/SCOPUSSearchAPI.wadl
     #https://dev.elsevier.com/guides/ScopusSearchViews.htm
     #Scopus response https://dev.elsevier.com/payloads/search/scopusSearchResp.json
-    resp = generic_elsevier_api(
-      root_http = api_url,
-      query=query_string,
-      type="search",
-      search_type="scopus",
-      cursor=cursor_value,
-      view="COMPLETE",
-      headers = head
-    )
+    resp = generic_elsevier_api(root_http=api_url, query=query_string, type="search", search_type="scopus", cursor=cursor_value, view="COMPLETE", headers=head)
     
     if (resp$get_statement$status_code != 200) {
       stop(paste(resp))
@@ -104,23 +86,23 @@ get_scopus_papers = function (
       first_round=FALSE
       return_data_frame = data.frame(Id = character(found_items_num),
                                      DOI = character(found_items_num),
-                                      Title = character(found_items_num), 
-                                      Creator = character(found_items_num), 
-                                      PubName = character(found_items_num), 
-                                      Date = character(found_items_num),
-                                      Abstract = character(found_items_num),
-                                      AuthorKeyWords = character(found_items_num),
-                                      Cites = numeric(found_items_num),
-                                      PageRange = character(found_items_num),
-                                      PubType1 =  character(found_items_num),
-                                      PubType2 = character(found_items_num),
-                                      AuthorCount = numeric(found_items_num),
-                                      Authors = character(found_items_num),
-                                      AuthorIds = character(found_items_num),
-                                      AffiliationCount = numeric(found_items_num),
-                                      Affiliations = character(found_items_num),
-                                      AffiliationCountries= character(found_items_num),
-                                      stringsAsFactors=F)
+                                     Title = character(found_items_num), 
+                                     Creator = character(found_items_num), 
+                                     PubName = character(found_items_num), 
+                                     Date = character(found_items_num),
+                                     Abstract = character(found_items_num),
+                                     AuthorKeyWords = character(found_items_num),
+                                     Cites = numeric(found_items_num),
+                                     PageRange = character(found_items_num),
+                                     PubType1 =  character(found_items_num),
+                                     PubType2 = character(found_items_num),
+                                     AuthorCount = numeric(found_items_num),
+                                     Authors = character(found_items_num),
+                                     AuthorIds = character(found_items_num),
+                                     AffiliationCount = numeric(found_items_num),
+                                     Affiliations = character(found_items_num),
+                                     AffiliationCountries= character(found_items_num),
+                                     stringsAsFactors=F)
     }
     #could be moved inside else
     if (found_items_num > max_items) {
@@ -138,7 +120,7 @@ get_scopus_papers = function (
       i=1;
       for(entry in entries){
         tryCatch({ #Corrupted data rows are always possible. 
-        #Pick single fields 
+          #Pick single fields 
           if (is.character(entry$`dc:identifier`)){return_data_frame$Id[start_item+i] <- entry$`dc:identifier`}
           if (is.character(entry$`prism:doi`)){return_data_frame$DOI[start_item+i] <- entry$`prism:doi`}
           if (is.character(entry$`dc:title`)){return_data_frame$Title[start_item+i] <- entry$`dc:title`}
@@ -205,6 +187,6 @@ get_scopus_papers = function (
   }
   print ("Data might be incomplete in row numbers with errors :" )
   print(error_rows)
-
+  
   return_data_frame
 }
