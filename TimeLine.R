@@ -1,4 +1,6 @@
-my_file <- "my_Scopus_TSE_articles_clean_data.RData"
+my_file <- "my_Scopus_serverless_data.RData"
+my_file <- "my_STO_serverless_data.RData"
+
 
 #draw_myWordCloud = function(my_file){
 
@@ -15,7 +17,7 @@ load(my_temp_file)
 #Take years from date 
 #(Hint lot of online help for various conversions availabe )
 years <- lubridate::year(my_articles$Date)
-class(years)
+  class(years)
 class(my_articles)
 class(my_articles$Date)
 
@@ -23,9 +25,9 @@ class(my_articles$Date)
 yearly <- table (years)
 class(yearly)
 plot (yearly, type ="l", xaxt="n", xlab="", ylab="")
-axis(1, at = seq(1975, 2018, by = 1), las=2)
+axis(1, at = seq(1975, 2022, by = 1), las=2)
 
-#use pure date
+ #use pure date
 date <- table (my_articles$Date)
 plot (date, type ="l", xaxt="n", xlab="", ylab="")
 #What is the problem?
@@ -89,11 +91,12 @@ head(my_articles$Title[order(-my_articles$Cites)], n=5)
 median (nchar(my_articles2$Title))
 
 boxplot(my_articles2$Cites[nchar(my_articles2$Title) > median (nchar(my_articles2$Title))],
-        my_articles2$Cites[nchar(my_articles2$Title) <= median (nchar(my_articles2$Title))], names=c("longer", "shorter"), main="IEEE Transaction on Software Engineering")
+        my_articles2$Cites[nchar(my_articles2$Title) <= median (nchar(my_articles2$Title))], names=c("longer", "shorter"))
 
 wilcox.test(my_articles2$Cites[nchar(my_articles2$Title) > median (nchar(my_articles2$Title))],
        my_articles2$Cites[nchar(my_articles2$Title) <= median (nchar(my_articles2$Title))])
 summary(my_articles2$Cites[nchar(my_articles2$Title) > median (nchar(my_articles2$Title))])
+
 summary(my_articles2$Cites[nchar(my_articles2$Title) <= median (nchar(my_articles2$Title))])
 
 #Lets split four ways
