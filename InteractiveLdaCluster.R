@@ -8,7 +8,8 @@ library(magrittr)
 library(LDAvis)
 
 #May take a while - wait patiently
-my_file = "my_Scopus_TSE_articles_clean_data.RData"
+#my_file = "my_Scopus_serverless_data.RData"
+my_file = "my_STO_serverless_data.RData"
 #draw_my_IAMap = function(my_file) {
   
   print(paste("Interactive LDA Cluster, my_file: ", my_file))
@@ -25,7 +26,7 @@ my_file = "my_Scopus_TSE_articles_clean_data.RData"
   
   it = itoken(my_tokens)
   
-  my_stopwords = c(stopwords::stopwords(language = "en", source = "snowball"),"myStopword1", "myStopword2")
+  my_stopwords = c(stopwords::stopwords(language = "en", source = "snowball"),"serverless", "cloud", "using", "use", "function", "quot", "file", "app", "applictaion", "data", "user", "s", "can", "lambda", "want", "trying", "template", "one", "way", "like", "39", "works", "help", "gateway", "dynamodb", "files", "getting", "project", "stack", "just", "bucket", "need", "working", "local", "tried", "vpc", "cognito", "following", "http", "error", "set", "table", "new", "created")
   
   
   #Remove stopwords

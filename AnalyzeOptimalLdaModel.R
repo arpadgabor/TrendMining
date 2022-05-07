@@ -9,8 +9,8 @@ library(xtable)
 library("text2vec")
 library("nnet") #Breaks ties at random when searching for max
 
-
-my_file = "my_Scopus_TSE_articles_clean_data.RData"
+my_file = "my_Scopus_serverless_data.RData"
+#my_file = "my_STO_serverless_data.RData"
 #Articles. Make sure this is the same you used to build LDA model otherwise it will not make any sense
 my_temp_file = paste(my_data_dir, "/", sep="")
 my_temp_file = paste(my_temp_file, my_file, sep="")
@@ -44,7 +44,7 @@ topics_n = lda_model$.__enclos_env__$private$n_topics
 #List top ten terms for all topics
 Terms[1:10,]
 #Study one topic (Replace by the optimal topics)
-Terms[1:10,topics_n]
+Terms[1:10,1]
 	
 #List all papers for topic 1
 my_articles$Title[Topics==1]

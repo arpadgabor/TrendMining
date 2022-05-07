@@ -16,13 +16,15 @@ library("tokenizers")
 #source ("mclapply.hack.R")
 
 #Set the file to be analyzed, e.g.
-my_file = "my_Scopus_TSE_articles_clean_data.RData"
+my_file = "my_Scopus_serverless_data.RData"
+#my_file = "my_STO_serverless_data.RData"
+
 
 my_temp_file = paste(my_data_dir, "/", sep="")
 my_temp_file = paste(my_temp_file, my_file, sep="")
 load(my_temp_file)
 
-my_stopwords = c(stopwords::stopwords(language = "en", source = "snowball"),"myStopword1", "myStopword2")
+my_stopwords = c(stopwords::stopwords(language = "en", source = "snowball"),"serverless", "cloud", "resources", "model", "based", "data", "edge", "time", "however", "use", "new", "show", "function", "proposed", "also", "used", "present", "high", "results", "different", "developers", "mamagement", "work", "based", "users", "devices", "paper", "design", "propose", "distributed", "aims", "approach", "form", "many", "since", "part", "supporting", "studies", "even", "one", "using", "query", "multiple", "supports", "important", "studies", "developed", "form", "emerged", "many", "since", "can","execution", "learning", "processing", "containers", "web", "container", "machine", "storage", "cold", "large", "workloads")
 
 #Articles with NA dates cause false analysis later kick them out
 my_articles <- my_articles[which(!is.na(my_articles$Date)),]
@@ -36,6 +38,7 @@ my_articles$Clean_Text <- my_text
 #Create first LDA model. We select 80% for model creation remaining is for testing
 #See tutorial for more details http://text2vec.org/topic_modeling.html#latent_dirichlet_allocation
 #model goodness
+#sample <- sample.int(n = nrow(my_articles), size = floor(.80*nrow(my_articles)), replace = F)
 sample <- sample.int(n = nrow(my_articles), size = floor(.80*nrow(my_articles)), replace = F)
 #create tokens
 tokens = my_articles$Clean_Text [sample] %>%  tokenize_words (strip_numeric = TRUE)
@@ -86,14 +89,14 @@ DEoptim(optimalLda, lower, higher, DEoptim.control(strategy = 2, itermax = 10, N
 
 #lets apply the best input parameter and genera a model based on it. Then save it for further analysis (Analyze optimal model)--------------------
 
-#297.9555 0.2518732 0.005613016
+#"k: 285 alpha: 0.573930377814076 beta 0.00347176940842867 perp: 200.426080250775
 
 tokens = my_articles$Clean_Text %>%  tokenize_words (strip_numeric = TRUE)
 it <- itoken(tokens, progressbar = FALSE)
 v = create_vocabulary(it) %>% prune_vocabulary(term_count_min = 10, doc_proportion_max = 0.3)
 vectorizer = vocab_vectorizer(v)
 dtm = create_dtm(it, vectorizer, type = "dgTMatrix")
-lda_model = LDA$new(n_topics = 298, doc_topic_prior = 0.2518732, topic_word_prior = 0.005613016)
+lda_model = LDA$new(n_topics = 20, doc_topic_prior = 0.1, topic_word_prior = 0.01 )
 doc_topic_distr = lda_model$fit_transform(x = dtm, n_iter = 1000, 
                                           convergence_tol = 0.001, n_check_convergence = 25, 
                                           #convergence_tol = 0.01, n_check_convergence = 25, 
@@ -119,7 +122,7 @@ optimalLda <- function (x){
   m_alpha <- x[2]
   m_beta <- x[3]
   
-  sample <- sample.int(n = nrow(my_articles), size = floor(.80*nrow(my_articles)), replace = F)
+  sample <- sample.int(n = nrow(my_articles), size = floor(.60*nrow(my_articles)), replace = F)
   
   tokens = my_articles$Clean_Text [sample] %>%  tokenize_words (strip_numeric = TRUE)
   it <- itoken(tokens, progressbar = FALSE)
